@@ -5,7 +5,7 @@ from soccer.exceptions import APIErrorException
 
 class RequestHandler(object):
 
-    BASE_URL = 'http://api.football-data.org/alpha/'
+    BASE_URL = 'http://api.football-data.org/v1/'
     LIVE_URL = 'http://soccer-cli.appspot.com/'
 
     def __init__(self, headers, league_ids, team_names, writer):
@@ -63,14 +63,13 @@ class RequestHandler(object):
                 click.secho(e.args[0],
                             fg="red", bold=True)
         else:
-            click.secho("Team code is not correct.",
-                        fg="red", bold=True)
+            click.secho("Team code is not correct.", fg="red", bold=True)
 
     def get_standings(self, league):
         """Queries the API and gets the standings for a particular league"""
         league_id = self.league_ids[league]
         try:
-            req = self._get('soccerseasons/{id}/leagueTable'.format(
+            req = self._get('competitions/{id}/leagueTable'.format(
                         id=league_id))
             self.writer.standings(req.json(), league)
         except APIErrorException:
@@ -89,7 +88,7 @@ class RequestHandler(object):
         if league:
             try:
                 league_id = self.league_ids[league]
-                req = self._get('soccerseasons/{id}/fixtures?timeFrame={time_frame}{time}'.format(
+                req = self._get('competitions/{id}/fixtures?timeFrame={time_frame}{time}'.format(
                      id=league_id, time_frame=time_frame, time=str(time)))
                 fixtures_results = req.json()
                 # no fixtures in the past week. display a help message and return

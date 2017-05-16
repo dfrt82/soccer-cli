@@ -48,7 +48,7 @@ class BaseWriter(object):
     def supported_leagues(self, total_data):
         """Filters out scores of unsupported leagues"""
         supported_leagues = {val: key for key, val in LEAGUE_IDS.items()}
-        get_league_id = lambda x: int(x["_links"]["soccerseason"]["href"].split("/")[-1])
+        get_league_id = lambda x: int(x["_links"]["competition"]["href"].split("/")[-1])
         fixtures = (fixture for fixture in total_data["fixtures"]
                     if get_league_id(fixture) in supported_leagues)
 
